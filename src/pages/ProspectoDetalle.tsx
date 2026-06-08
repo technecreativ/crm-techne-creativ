@@ -1,17 +1,32 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Trash2, UserCheck, Plus, Check } from 'lucide-react'
+import { ArrowLeft, Trash2, UserCheck, Plus, Check, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Header from '../components/layout/Header'
-import Badge, { STAGE_VARIANT } from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import Modal from '../components/ui/Modal'
 import ContactButtons from '../components/shared/ContactButtons'
 import { formatDate, scoreColor } from '../lib/utils'
-import type { Prospecto, Tarea, TareaTipo } from '../types'
+import type { Prospecto, Tarea, TareaTipo, ProspectoStage } from '../types'
 
 const TIPOS: TareaTipo[] = ['Llamada', 'WhatsApp', 'Email', 'Reunión', 'Tarea']
 const TIPO_ICON: Record<TareaTipo, string> = { 'Llamada': '📞', 'WhatsApp': '💬', 'Email': '📧', 'Reunión': '🤝', 'Tarea': '✅' }
+
+const STAGES: ProspectoStage[] = ['Nuevo', 'Contactado', 'Propuesta enviada', 'Reunión', 'Ganado', 'Perdido']
+const STAGE_COLORS: Record<string, string> = {
+  'Nuevo': '#6b7280',
+  'Contactado': '#0094ff',
+  'Propuesta enviada': '#fffc00',
+  'Reunión': '#00f7ff',
+  'Ganado': '#10b981',
+  'Perdido': '#ff006b',
+}
+const NEXT_STAGE: Partial<Record<ProspectoStage, ProspectoStage>> = {
+  'Nuevo': 'Contactado',
+  'Contactado': 'Propuesta enviada',
+  'Propuesta enviada': 'Reunión',
+  'Reunión': 'Ganado',
+}
 
 export default function ProspectoDetalle() {
   const { id } = useParams<{ id: string }>()
@@ -46,6 +61,12 @@ export default function ProspectoDetalle() {
   const toggleTarea = async (t: Tarea) => {
     await supabase.from('tareas').update({ completada: !t.completada }).eq('id', t.id)
     loadTareas()
+  }
+
+  const changeStage = async (stage: ProspectoStage) => {
+    if (!p || p.stage === stage) return
+    await supabase.from('prospectos').update({ stage, updated_at: new Date().toISOString() }).eq('id', p.id)
+    setP(prev => prev ? { ...prev, stage } : prev)
   }
 
   const convertToCliente = async () => {
@@ -114,7 +135,18 @@ export default function ProspectoDetalle() {
                   <p className="text-sm mt-1" style={{ color: '#6b7280' }}>{p.ciudad} · {p.nicho}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Badge label={p.stage} variant={STAGE_VARIANT[p.stage]} />
+                  <select
+                    value={p.stage}
+                    onChange={e => changeStage(e.target.value as ProspectoStage)}
+                    className="px-3 py-1.5 rounded-full text-xs font-semibold outline-none cursor-pointer transition-all"
+                    style={{
+                      background: `${STAGE_COLORS[p.stage]}18`,
+                      color: STAGE_COLORS[p.stage],
+                      border: `1px solid ${STAGE_COLORS[p.stage]}50`,
+                    }}
+                  >
+                    {STAGES.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
                   <span className="text-2xl font-bold" style={{ color: scoreColor(p.score) }}>{p.score}</span>
                 </div>
               </div>
@@ -200,6 +232,47 @@ export default function ProspectoDetalle() {
                   style={{ background: 'rgba(0,247,255,0.1)', color: '#00f7ff', border: '1px solid rgba(0,247,255,0.2)' }}>
                   Agendar reunión
                 </a>
+              </div>
+            </div>
+
+            {/* Avanzar etapa */}
+            {NEXT_STAGE[p.stage] && (
+              <div className="rounded-2xl p-5" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#6b7280' }}>Siguiente etapa</h3>
+                <button
+                  onClick={() => changeStage(NEXT_STAGE[p.stage]!)}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-all"
+                  style={{
+                    background: `${STAGE_COLORS[NEXT_STAGE[p.stage]!]}18`,
+                    color: STAGE_COLORS[NEXT_STAGE[p.stage]!],
+                    border: `1px solid ${STAGE_COLORS[NEXT_STAGE[p.stage]!]}40`,
+                  }}
+                >
+                  <span>Mover a "{NEXT_STAGE[p.stage]}"</span>
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
+
+            {/* Todas las etapas */}
+            <div className="rounded-2xl p-5" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+              <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#6b7280' }}>Cambiar etapa</h3>
+              <div className="flex flex-wrap gap-2">
+                {STAGES.filter(s => s !== 'Ganado').map(s => (
+                  <button
+                    key={s}
+                    onClick={() => changeStage(s)}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium transition-all"
+                    style={{
+                      background: p.stage === s ? `${STAGE_COLORS[s]}25` : 'transparent',
+                      color: p.stage === s ? STAGE_COLORS[s] : '#4b5563',
+                      border: `1px solid ${p.stage === s ? STAGE_COLORS[s] + '50' : '#1e1e1e'}`,
+                      fontWeight: p.stage === s ? 700 : 400,
+                    }}
+                  >
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
