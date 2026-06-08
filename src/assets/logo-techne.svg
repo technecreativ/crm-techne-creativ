@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <!-- Overlapping ovals brand mark -->
+  <ellipse cx="22" cy="30" rx="18" ry="22" fill="none" stroke="#00f7ff" stroke-width="2.5" opacity="0.9"/>
+  <ellipse cx="34" cy="30" rx="18" ry="22" fill="none" stroke="#ff006b" stroke-width="2.5" opacity="0.9"/>
+  <ellipse cx="28" cy="22" rx="18" ry="14" fill="none" stroke="#fffc00" stroke-width="2.5" opacity="0.9"/>
+  <!-- Text -->
+  <text x="62" y="26" font-family="Syne, system-ui, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="1">TÉCHNĒ</text>
+  <text x="62" y="43" font-family="DM Sans, system-ui, sans-serif" font-size="11" font-weight="400" fill="#9ca3af" letter-spacing="2">CREATIV</text>
+</svg>
