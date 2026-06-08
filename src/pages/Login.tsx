@@ -29,7 +29,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden"
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4"
       style={{ background: 'radial-gradient(ellipse at 50% 0%, #0d1a2e 0%, #0a0a0a 60%)' }}>
 
       {/* Glow decorativo */}
@@ -40,10 +40,10 @@ export default function Login() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-sm mx-4"
+        className="w-full max-w-sm"
       >
         {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-5 sm:mb-8">
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -51,25 +51,25 @@ export default function Login() {
             className="mb-4"
             style={{ filter: 'drop-shadow(0 0 24px rgba(0,148,255,0.35))' }}
           >
-            <img src={logoUrl} alt="Techne Creativ" className="w-48 h-auto" />
+            <img src={logoUrl} alt="Techne Creativ" className="w-36 sm:w-48 h-auto" />
           </motion.div>
-          <p className="text-sm" style={{ color: '#6b7280' }}>
+          <p className="text-xs sm:text-sm" style={{ color: '#6b7280' }}>
             Sistema Administrativo · CRM Interno
           </p>
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border p-8"
+        <div className="rounded-2xl border p-5 sm:p-8"
           style={{ background: '#111111', borderColor: '#1e1e1e', boxShadow: '0 24px 64px rgba(0,0,0,0.6)' }}>
 
-          <h2 className="text-lg font-semibold mb-6" style={{ color: '#e8ecf7', fontFamily: 'Syne, sans-serif' }}>
+          <h2 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6" style={{ color: '#e8ecf7', fontFamily: 'Syne, sans-serif' }}>
             Iniciar sesión
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             {/* Usuario */}
             <div>
-              <label className="block text-xs font-semibold mb-2 uppercase tracking-wider" style={{ color: '#6b7280' }}>
+              <label className="block text-xs font-semibold mb-1.5 sm:mb-2 uppercase tracking-wider" style={{ color: '#6b7280' }}>
                 Usuario
               </label>
               <input
@@ -78,7 +78,7 @@ export default function Login() {
                 onChange={e => setUsername(e.target.value)}
                 placeholder="jmejiasdaza"
                 autoComplete="username"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all text-center"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm outline-none transition-all text-center"
                 style={{
                   background: '#0a0a0a',
                   border: '1.5px solid #1e1e1e',
@@ -91,7 +91,7 @@ export default function Login() {
 
             {/* Contraseña */}
             <div>
-              <label className="block text-xs font-semibold mb-2 uppercase tracking-wider" style={{ color: '#6b7280' }}>
+              <label className="block text-xs font-semibold mb-1.5 sm:mb-2 uppercase tracking-wider" style={{ color: '#6b7280' }}>
                 Contraseña
               </label>
               <div className="relative">
@@ -101,7 +101,7 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••••"
                   autoComplete="current-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl text-sm outline-none transition-all text-center"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 rounded-xl text-sm outline-none transition-all text-center"
                   style={{
                     background: '#0a0a0a',
                     border: '1.5px solid #1e1e1e',
@@ -138,7 +138,7 @@ export default function Login() {
               type="submit"
               disabled={loading}
               whileTap={{ scale: 0.98 }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-all mt-2"
+              className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 rounded-xl font-semibold text-sm transition-all mt-2"
               style={{
                 background: loading ? '#1a3a5e' : '#0094ff',
                 color: '#fff',
