@@ -8,6 +8,7 @@ import {
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import Badge, { STAGE_VARIANT } from '../components/ui/Badge'
+import Header from '../components/layout/Header'
 import { formatDate } from '../lib/utils'
 import type { Prospecto, Tarea, Proyecto } from '../types'
 
@@ -75,6 +76,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
+      <Header title="Dashboard" />
       <div className="flex-1 overflow-y-auto">
         <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-10">
 
