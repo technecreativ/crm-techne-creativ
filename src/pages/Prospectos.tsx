@@ -136,7 +136,7 @@ export default function Prospectos() {
         const phones = toInsert.map(r => r!.whatsapp)
         const { data: existing } = await supabase.from('prospectos').select('whatsapp').in('whatsapp', phones)
         const existingSet = new Set(existing?.map(e => e.whatsapp) ?? [])
-        const nuevos = toInsert.filter(r => r!.whatsapp && !existingSet.has(r!.whatsapp))
+        const nuevos = toInsert.filter((r): r is NonNullable<typeof r> => !!r && !!r.whatsapp && !existingSet.has(r.whatsapp))
         if (nuevos.length) await supabase.from('prospectos').insert(nuevos)
         alert(`${nuevos.length} prospectos importados. ${toInsert.length - nuevos.length} duplicados omitidos.`)
         load()

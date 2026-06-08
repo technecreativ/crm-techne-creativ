@@ -38,7 +38,7 @@ export default function Perfil() {
     borderRadius: 12, fontSize: 14, outline: 'none',
   }
 
-  const username = user?.username ?? (user?.email ?? '').split('@')[0]
+  const username = user?.username ?? user?.full_name ?? 'Usuario'
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">

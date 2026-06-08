@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import Badge, { STAGE_VARIANT } from '../components/ui/Badge'
 import { formatDate } from '../lib/utils'
-import type { Prospecto, Cliente, Tarea, Proyecto } from '../types'
+import type { Prospecto, Tarea, Proyecto } from '../types'
 
 interface Stats {
   prospectos: number
@@ -35,7 +35,7 @@ export default function Dashboard() {
 
   const hora = new Date().getHours()
   const saludo = hora < 12 ? 'Buenos días' : hora < 19 ? 'Buenas tardes' : 'Buenas noches'
-  const username = (user?.email ?? '').split('@')[0]
+  const username = user?.username ?? user?.full_name ?? 'Usuario'
 
   useEffect(() => {
     const load = async () => {

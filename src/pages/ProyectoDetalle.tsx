@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, Trash2, Check, GripVertical } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, Check } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Header from '../components/layout/Header'
-import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import Modal from '../components/ui/Modal'
 import { formatCurrency, formatDate } from '../lib/utils'
@@ -111,7 +110,6 @@ export default function ProyectoDetalle() {
   const pagoPct = proyecto.monto_total ? Math.min(100, (proyecto.monto_cobrado / proyecto.monto_total) * 100) : 0
   const pendiente = (proyecto.monto_total ?? 0) - proyecto.monto_cobrado
   const tipoColor = TIPO_COLOR[proyecto.tipo ?? 'Otro'] ?? '#6b7280'
-  const estadoColor = ESTADO_COLOR[proyecto.estado] ?? '#6b7280'
 
   const inp = { background: '#0a0a0a', border: '1.5px solid #1e1e1e', color: '#e8ecf7' }
 

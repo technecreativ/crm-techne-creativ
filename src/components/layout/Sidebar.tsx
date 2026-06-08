@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import {
   LayoutDashboard, Users, UserCheck, CheckSquare,
   FileText, LogOut, X, ChevronRight, FolderKanban,
-  BarChart2, User,
+  BarChart2,
 } from 'lucide-react'
 import { useAuthStore } from '../../store/authStore'
 import { useUIStore } from '../../store/uiStore'
