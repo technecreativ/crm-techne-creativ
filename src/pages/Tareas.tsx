@@ -73,11 +73,11 @@ export default function Tareas() {
       <Header title="Tareas"
         actions={<Button variant="primary" size="sm" icon={<Plus size={13} />} onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(true) }}>Nueva tarea</Button>}
       />
-      <div className="px-6 py-3 flex items-center gap-3 flex-wrap" style={{ borderBottom: '1px solid #1a1a1a' }}>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+      <div className="px-4 sm:px-6 py-3 flex items-center gap-3 flex-wrap" style={{ borderBottom: '1px solid #1a1a1a' }}>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl flex-1 sm:flex-none" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
           <Search size={14} style={{ color: '#6b7280' }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar tarea…"
-            className="bg-transparent text-sm outline-none w-44" style={{ color: '#e8ecf7' }} />
+            className="bg-transparent text-sm outline-none flex-1 sm:w-44" style={{ color: '#e8ecf7' }} />
         </div>
         <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid #1e1e1e' }}>
           {(['pendientes', 'todas', 'completadas'] as const).map(f => (
@@ -90,13 +90,13 @@ export default function Tareas() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         {loading ? (
           <div className="flex justify-center py-20"><div className="w-8 h-8 border-2 border-[#0094ff]/30 border-t-[#0094ff] rounded-full animate-spin" /></div>
         ) : filtered.length === 0 ? (
           <p className="text-center py-16 text-sm" style={{ color: '#6b7280' }}>🎉 Sin tareas {filtro === 'pendientes' ? 'pendientes' : ''}</p>
         ) : (
-          <div className="space-y-2 max-w-2xl">
+          <div className="space-y-2 w-full max-w-2xl">
             {filtered.map(t => (
               <div key={t.id} className="flex items-start gap-3 p-4 rounded-xl transition-colors"
                 style={{ background: '#111', border: `1px solid ${isVencida(t) ? '#ff006b33' : '#1e1e1e'}` }}>
@@ -135,7 +135,7 @@ export default function Tareas() {
               className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
               style={{ background: '#0a0a0a', border: '1.5px solid #1e1e1e', color: '#e8ecf7' }} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Tipo</label>
               <select value={form.tipo} onChange={e => f('tipo', e.target.value)}

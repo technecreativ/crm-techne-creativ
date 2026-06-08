@@ -28,7 +28,7 @@ export default function Modal({ open, title, onClose, children, maxWidth = 520 }
             style={{ maxWidth, background: '#111111', border: '1px solid #1e1e1e', boxShadow: '0 24px 64px rgba(0,0,0,0.8)', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 flex-shrink-0"
+            <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 flex-shrink-0"
               style={{ borderBottom: '1px solid #1a1a1a' }}>
               <h3 className="text-base font-semibold" style={{ fontFamily: 'Syne, sans-serif', color: '#e8ecf7' }}>
                 {title}
@@ -42,7 +42,7 @@ export default function Modal({ open, title, onClose, children, maxWidth = 520 }
               </button>
             </div>
             {/* Body */}
-            <div className="px-6 py-5 overflow-y-auto flex-1">{children}</div>
+            <div className="px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto flex-1">{children}</div>
           </motion.div>
         </motion.div>
       )}

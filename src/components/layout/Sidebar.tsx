@@ -27,6 +27,13 @@ export default function Sidebar() {
   const { sidebarOpen, setSidebar } = useUIStore()
   const navigate = useNavigate()
   const [overdueCount, setOverdueCount] = useState(0)
+  const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' && window.innerWidth >= 1024)
+
+  useEffect(() => {
+    const update = () => setIsDesktop(window.innerWidth >= 1024)
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   useEffect(() => {
     const load = async () => {
@@ -62,9 +69,9 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <motion.aside
-        animate={{ x: sidebarOpen ? 0 : -260 }}
+        animate={{ x: isDesktop ? 0 : (sidebarOpen ? 0 : -260) }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-0 z-40 h-screen flex flex-col lg:translate-x-0"
+        className="fixed left-0 top-0 z-40 h-screen flex flex-col"
         style={{ width: 260, background: '#0d0d0d', borderRight: '1px solid #1a1a1a' }}
       >
         {/* Logo */}

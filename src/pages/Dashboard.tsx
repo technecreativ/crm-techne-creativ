@@ -76,7 +76,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
       <div className="flex-1 overflow-y-auto">
-        <div className="p-8 max-w-7xl mx-auto space-y-10">
+        <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-10">
 
           {/* Saludo */}
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>

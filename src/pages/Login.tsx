@@ -78,7 +78,7 @@ export default function Login() {
                 onChange={e => setUsername(e.target.value)}
                 placeholder="jmejiasdaza"
                 autoComplete="username"
-                className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all text-center"
                 style={{
                   background: '#0a0a0a',
                   border: '1.5px solid #1e1e1e',
@@ -101,7 +101,7 @@ export default function Login() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••••"
                   autoComplete="current-password"
-                  className="w-full px-4 py-3 pr-12 rounded-xl text-sm outline-none transition-all"
+                  className="w-full px-4 py-3 pr-12 rounded-xl text-sm outline-none transition-all text-center"
                   style={{
                     background: '#0a0a0a',
                     border: '1.5px solid #1e1e1e',

@@ -93,7 +93,7 @@ export default function ProspectoDetalle() {
         }
       />
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <button
           onClick={() => navigate('/prospectos')}
           className="flex items-center gap-2 text-sm mb-6 transition-colors"
@@ -118,7 +118,7 @@ export default function ProspectoDetalle() {
                   <span className="text-2xl font-bold" style={{ color: scoreColor(p.score) }}>{p.score}</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <InfoRow label="Contacto" value={p.contacto} />
                 <InfoRow label="WhatsApp" value={p.whatsapp} />
                 <InfoRow label="Email" value={p.email} />
@@ -218,7 +218,7 @@ export default function ProspectoDetalle() {
               style={{ background: '#0a0a0a', border: '1.5px solid #1e1e1e', color: '#e8ecf7' }}
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Tipo</label>
               <select

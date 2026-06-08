@@ -166,18 +166,18 @@ export default function Prospectos() {
             </div>
             <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={importCSV} />
             <Button size="sm" icon={<Upload size={13} />} onClick={() => fileRef.current?.click()}>
-              Importar CSV
+              <span className="hidden sm:inline">Importar CSV</span>
             </Button>
             <Button variant="primary" size="sm" icon={<Plus size={13} />} onClick={openNew}>
-              Nuevo
+              <span className="hidden sm:inline">Nuevo</span>
             </Button>
           </div>
         }
       />
 
       {/* Búsqueda */}
-      <div className="px-6 py-3" style={{ borderBottom: '1px solid #1a1a1a' }}>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl max-w-xs" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+      <div className="px-4 sm:px-6 py-3" style={{ borderBottom: '1px solid #1a1a1a' }}>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl w-full sm:max-w-xs" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
           <Search size={14} style={{ color: '#6b7280' }} />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Buscar por nombre, ciudad, nicho…"
@@ -185,7 +185,7 @@ export default function Prospectos() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="w-8 h-8 border-2 border-[#0094ff]/30 border-t-[#0094ff] rounded-full animate-spin" />
@@ -259,7 +259,8 @@ export default function Prospectos() {
         ) : (
           /* ── LISTA ── */
           <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #1e1e1e' }}>
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[600px]">
               <thead>
                 <tr style={{ background: '#111', borderBottom: '1px solid #1e1e1e' }}>
                   {['Negocio', 'Ciudad', 'Nicho', 'WhatsApp', 'Score', 'Etapa', ''].map(h => (
@@ -299,29 +300,30 @@ export default function Prospectos() {
               <p className="text-center py-10 text-sm" style={{ color: '#6b7280' }}>Sin prospectos</p>
             )}
           </div>
+          </div>
         )}
       </div>
 
       {/* Modal formulario */}
       <Modal open={showForm} title={editId ? 'Editar prospecto' : 'Nuevo prospecto'} onClose={() => setShowForm(false)}>
         <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Field label="Nombre del negocio *" value={form.nombre_negocio} onChange={v => f('nombre_negocio', v)} />
             <Field label="Persona de contacto" value={form.contacto} onChange={v => f('contacto', v)} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Field label="Ciudad" value={form.ciudad} onChange={v => f('ciudad', v)} placeholder="Rancagua" />
             <Field label="Nicho" value={form.nicho} onChange={v => f('nicho', v)} placeholder="Comida, Fitness…" />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Field label="WhatsApp" value={form.whatsapp} onChange={v => f('whatsapp', v)} placeholder="+56 9 XXXX XXXX" />
             <Field label="Email" value={form.email} onChange={v => f('email', v)} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Field label="Instagram" value={form.instagram} onChange={v => f('instagram', v)} placeholder="@perfil" />
             <Field label="Sitio web" value={form.website} onChange={v => f('website', v)} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Etapa</label>
               <select value={form.stage} onChange={e => f('stage', e.target.value)}

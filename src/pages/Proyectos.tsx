@@ -109,14 +109,14 @@ export default function Proyectos() {
     <div className="flex flex-col flex-1 overflow-hidden">
       <Header title="Proyectos"
         actions={
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
               <Search size={14} style={{ color: '#6b7280' }} />
               <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar proyecto…"
-                className="bg-transparent text-sm outline-none w-36" style={{ color: '#e8ecf7' }} />
+                className="bg-transparent text-sm outline-none w-32" style={{ color: '#e8ecf7' }} />
             </div>
             <Button variant="primary" size="sm" icon={<Plus size={13} />} onClick={() => { setForm(EMPTY); setShowForm(true) }}>
-              Nuevo proyecto
+              <span className="hidden sm:inline">Nuevo proyecto</span>
             </Button>
           </div>
         }
@@ -171,7 +171,7 @@ export default function Proyectos() {
       <Modal open={showForm} title="Nuevo proyecto" onClose={() => setShowForm(false)}>
         <div className="space-y-3">
           <F label="Nombre del proyecto *" value={form.nombre} onChange={v => f('nombre', v)} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Cliente *</label>
               <select value={form.cliente_id} onChange={e => f('cliente_id', e.target.value)}
@@ -188,11 +188,11 @@ export default function Proyectos() {
               </select>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <F label="Fecha inicio" value={form.fecha_inicio} onChange={v => f('fecha_inicio', v)} type="date" />
             <F label="Fecha entrega" value={form.fecha_entrega} onChange={v => f('fecha_entrega', v)} type="date" />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <F label="Monto total" value={form.monto_total} onChange={v => f('monto_total', v)} type="number" />
             <F label="Cobrado" value={form.monto_cobrado} onChange={v => f('monto_cobrado', v)} type="number" />
             <div>

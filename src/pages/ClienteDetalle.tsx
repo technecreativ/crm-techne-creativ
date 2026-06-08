@@ -207,7 +207,7 @@ export default function ClienteDetalle() {
           </div>
         }
       />
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
         <button onClick={() => navigate('/clientes')} className="flex items-center gap-2 text-sm mb-6 transition-colors"
           style={{ color: '#6b7280' }}
           onMouseEnter={e => (e.currentTarget.style.color = '#0094ff')}
@@ -224,7 +224,7 @@ export default function ClienteDetalle() {
                 <h2 className="text-lg font-bold" style={{ fontFamily: 'Syne', color: '#e8ecf7' }}>{cliente.nombre_negocio}</h2>
                 <Badge label={cliente.estado} variant={STAGE_VARIANT[cliente.estado]} />
               </div>
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <IR label="Contacto" value={cliente.contacto} />
                 <IR label="Ciudad" value={cliente.ciudad} />
                 <IR label="Servicio" value={cliente.servicio} />
@@ -251,12 +251,12 @@ export default function ClienteDetalle() {
                     const pendiente = (p.monto_total ?? 0) - p.monto_cobrado
                     return (
                       <div key={p.id} className="p-4 rounded-xl" style={{ background: '#0d0d0d', border: '1px solid #1a1a1a' }}>
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <p className="font-semibold text-sm" style={{ color: '#e8ecf7' }}>{p.nombre}</p>
+                        <div className="flex items-start justify-between mb-2 gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm truncate" style={{ color: '#e8ecf7' }}>{p.nombre}</p>
                             <p className="text-xs mt-0.5" style={{ color: '#6b7280' }}>{p.tipo} · {p.estado}</p>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1.5 flex-shrink-0 flex-wrap justify-end">
                             <Badge label={p.estado} variant={STAGE_VARIANT[p.estado]} />
                             <Button size="sm" variant="ghost" onClick={() => openEditProj(p)}>Editar</Button>
                             <Button size="sm" variant="danger" icon={<Trash2 size={11} />} onClick={() => deleteProj(p.id)} />
@@ -428,15 +428,15 @@ export default function ClienteDetalle() {
       <Modal open={showEdit} title="Editar cliente" onClose={() => setShowEdit(false)}>
         <div className="space-y-3">
           <F label="Nombre del negocio *" value={editForm.nombre_negocio} onChange={v => setEditForm(f => ({ ...f, nombre_negocio: v }))} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <F label="Contacto" value={editForm.contacto} onChange={v => setEditForm(f => ({ ...f, contacto: v }))} />
             <F label="Ciudad" value={editForm.ciudad} onChange={v => setEditForm(f => ({ ...f, ciudad: v }))} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <F label="WhatsApp" value={editForm.whatsapp} onChange={v => setEditForm(f => ({ ...f, whatsapp: v }))} />
             <F label="Email" value={editForm.email} onChange={v => setEditForm(f => ({ ...f, email: v }))} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <F label="Servicio contratado" value={editForm.servicio} onChange={v => setEditForm(f => ({ ...f, servicio: v }))} />
             <Sel label="Estado" value={editForm.estado} onChange={v => setEditForm(f => ({ ...f, estado: v as Cliente['estado'] }))} opts={ESTADOS_CLIENTE} />
           </div>
@@ -453,15 +453,15 @@ export default function ClienteDetalle() {
       <Modal open={showProj} title={editProjId ? 'Editar proyecto' : 'Nuevo proyecto'} onClose={() => setShowProj(false)}>
         <div className="space-y-3">
           <F label="Nombre del proyecto *" value={projForm.nombre} onChange={v => pf('nombre', v)} />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Sel label="Tipo" value={projForm.tipo} onChange={v => pf('tipo', v)} opts={TIPOS_PROJ} />
             <Sel label="Estado" value={projForm.estado} onChange={v => pf('estado', v as ProyectoEstado)} opts={ESTADOS_PROJ} />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <F label="Fecha inicio" value={projForm.fecha_inicio} onChange={v => pf('fecha_inicio', v)} type="date" />
             <F label="Fecha entrega" value={projForm.fecha_entrega} onChange={v => pf('fecha_entrega', v)} type="date" />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <F label="Monto total" value={projForm.monto_total} onChange={v => pf('monto_total', v)} type="number" />
             <F label="Cobrado" value={projForm.monto_cobrado} onChange={v => pf('monto_cobrado', v)} type="number" />
             <Sel label="Moneda" value={projForm.moneda} onChange={v => pf('moneda', v)} opts={MONEDAS} />
@@ -480,8 +480,8 @@ export default function ClienteDetalle() {
         <div className="space-y-3">
           <F label="Título *" value={adicForm.titulo} onChange={v => af('titulo', v)} placeholder="Ej: Banner para Instagram" />
           <F label="Descripción" value={adicForm.descripcion} onChange={v => af('descripcion', v)} textarea placeholder="Describe qué necesita el cliente..." />
-          <div className="grid grid-cols-3 gap-3">
-            <div className="col-span-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="col-span-2 sm:col-span-1">
               <Sel label="Estado" value={adicForm.estado} onChange={v => af('estado', v as AdicionalEstado)} opts={ESTADOS_ADIC} />
             </div>
             <F label="Monto cotizado" value={adicForm.monto} onChange={v => af('monto', v)} type="number" />
@@ -498,7 +498,7 @@ export default function ClienteDetalle() {
       <Modal open={showTarea} title="Nueva tarea" onClose={() => setShowTarea(false)} maxWidth={420}>
         <div className="space-y-3">
           <F label="Título *" value={tForm.titulo} onChange={v => setTForm(f => ({ ...f, titulo: v }))} placeholder="Ej: Llamar para seguimiento" />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Sel label="Tipo" value={tForm.tipo} onChange={v => setTForm(f => ({ ...f, tipo: v as TareaTipo }))} opts={TIPOS_TAREA} />
             <F label="Fecha límite" value={tForm.fecha_limite} onChange={v => setTForm(f => ({ ...f, fecha_limite: v }))} type="date" />
           </div>
