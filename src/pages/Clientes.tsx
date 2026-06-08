@@ -74,10 +74,10 @@ export default function Clientes() {
         actions={<Button variant="primary" size="sm" icon={<Plus size={13} />} onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(true) }}>Nuevo cliente</Button>}
       />
       <div className="px-4 sm:px-6 py-3 flex items-center gap-3 flex-wrap" style={{ borderBottom: '1px solid #1a1a1a' }}>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl flex-1 sm:flex-none" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#111', border: '1px solid #1e1e1e', flex: '1 1 160px', maxWidth: 320 }}>
           <Search size={14} style={{ color: '#6b7280' }} />
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar cliente…"
-            className="bg-transparent text-sm outline-none flex-1 sm:w-48" style={{ color: '#e8ecf7' }} />
+            className="bg-transparent text-sm outline-none w-full" style={{ color: '#e8ecf7' }} />
         </div>
         <select value={filtroEstado} onChange={e => setFiltroEstado(e.target.value)}
           className="px-3 py-2 rounded-xl text-sm outline-none" style={{ background: '#111', border: '1px solid #1e1e1e', color: '#e8ecf7' }}>

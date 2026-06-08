@@ -177,7 +177,7 @@ export default function Prospectos() {
 
       {/* Búsqueda */}
       <div className="px-4 sm:px-6 py-3" style={{ borderBottom: '1px solid #1a1a1a' }}>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl w-full sm:max-w-xs" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl" style={{ background: '#111', border: '1px solid #1e1e1e', flex: '1 1 160px', maxWidth: 400 }}>
           <Search size={14} style={{ color: '#6b7280' }} />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Buscar por nombre, ciudad, nicho…"
