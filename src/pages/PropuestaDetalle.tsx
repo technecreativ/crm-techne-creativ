@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, Trash2, Send, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Plus, Trash2, Send, ExternalLink, Upload, FileText, X, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import Header from '../components/layout/Header'
 import Badge, { STAGE_VARIANT } from '../components/ui/Badge'
@@ -22,6 +22,9 @@ export default function PropuestaDetalle() {
   const isNew = id === 'nueva' || !id
   const [prop, setProp] = useState<typeof EMPTY_PROP & { id?: string; created_at?: string; sent_at?: string | null }>(EMPTY_PROP)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [dragOver, setDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -68,7 +71,38 @@ export default function PropuestaDetalle() {
 
   const input = (k: string, v: string | null) => setProp(p => ({ ...p, [k]: v }))
 
+  const uploadFile = async (file: File) => {
+    const allowed = ['application/pdf', 'text/html']
+    if (!allowed.includes(file.type)) {
+      alert('Solo se permiten archivos PDF o HTML')
+      return
+    }
+    setUploading(true)
+    const ext = file.name.split('.').pop()
+    const path = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+    const { error } = await supabase.storage.from('propuestas').upload(path, file, { contentType: file.type })
+    if (error) { alert('Error al subir el archivo: ' + error.message); setUploading(false); return }
+    const { data: { publicUrl } } = supabase.storage.from('propuestas').getPublicUrl(path)
+    setProp(p => ({ ...p, drive_url: publicUrl }))
+    if (!isNew && id) await supabase.from('propuestas').update({ drive_url: publicUrl }).eq('id', id)
+    setUploading(false)
+  }
+
+  const handleFileDrop = (e: React.DragEvent) => {
+    e.preventDefault(); setDragOver(false)
+    const file = e.dataTransfer.files[0]
+    if (file) uploadFile(file)
+  }
+
+  const removeArchivo = async () => {
+    setProp(p => ({ ...p, drive_url: null }))
+    if (!isNew && id) await supabase.from('propuestas').update({ drive_url: null }).eq('id', id)
+  }
+
   const inp = { background: '#0a0a0a', border: '1.5px solid #1e1e1e', color: '#e8ecf7' }
+
+  const isUploadedFile = (url: string | null) =>
+    url?.includes('supabase') && url.includes('/propuestas/')
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
@@ -121,17 +155,73 @@ export default function PropuestaDetalle() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Link Drive (PDF)</label>
-                    <div className="flex gap-2">
-                      <input value={prop.drive_url ?? ''} onChange={e => input('drive_url', e.target.value || null)}
-                        placeholder="https://drive.google.com/…" className="flex-1 px-3 py-2.5 rounded-xl text-sm outline-none" style={inp} />
-                      {prop.drive_url && (
-                        <a href={prop.drive_url} target="_blank" rel="noreferrer"
-                          className="px-3 py-2.5 rounded-xl flex items-center" style={{ background: '#1e1e1e', color: '#6b7280' }}>
-                          <ExternalLink size={14} />
-                        </a>
-                      )}
-                    </div>
+                    <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Archivo de propuesta</label>
+                    <input ref={fileInputRef} type="file" accept=".html,.pdf" className="hidden"
+                      onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f); e.target.value = '' }} />
+
+                    {prop.drive_url ? (
+                      /* ── Archivo o URL cargado ── */
+                      <div className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                        style={{ background: '#0d0d0d', border: '1px solid #0094ff33' }}>
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ background: 'rgba(0,148,255,0.12)' }}>
+                          <FileText size={15} style={{ color: '#0094ff' }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate" style={{ color: '#e8ecf7' }}>
+                            {isUploadedFile(prop.drive_url)
+                              ? decodeURIComponent(prop.drive_url.split('/').pop()?.replace(/^\d+-/, '') ?? 'Archivo')
+                              : 'Link externo'}
+                          </p>
+                          <p className="text-xs truncate" style={{ color: '#6b7280' }}>{prop.drive_url}</p>
+                        </div>
+                        <div className="flex items-center gap-1.5 flex-shrink-0">
+                          <a href={prop.drive_url} target="_blank" rel="noreferrer"
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1"
+                            style={{ background: 'rgba(0,148,255,0.12)', color: '#0094ff' }}>
+                            <ExternalLink size={12} /> Ver
+                          </a>
+                          <button onClick={removeArchivo} className="p-1.5 rounded-lg transition-colors"
+                            style={{ color: '#6b7280' }}
+                            onMouseEnter={e => (e.currentTarget.style.color = '#ff006b')}
+                            onMouseLeave={e => (e.currentTarget.style.color = '#6b7280')}>
+                            <X size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* ── Zona de drop + opciones ── */
+                      <div>
+                        <div
+                          onDragOver={e => { e.preventDefault(); setDragOver(true) }}
+                          onDragLeave={() => setDragOver(false)}
+                          onDrop={handleFileDrop}
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex flex-col items-center justify-center gap-2 px-4 py-6 rounded-xl cursor-pointer transition-all"
+                          style={{
+                            background: dragOver ? 'rgba(0,148,255,0.08)' : '#0a0a0a',
+                            border: `1.5px dashed ${dragOver ? '#0094ff' : '#2a2a2a'}`,
+                          }}>
+                          {uploading
+                            ? <Loader2 size={20} className="animate-spin" style={{ color: '#0094ff' }} />
+                            : <Upload size={20} style={{ color: dragOver ? '#0094ff' : '#4b5563' }} />}
+                          <p className="text-sm" style={{ color: dragOver ? '#0094ff' : '#6b7280' }}>
+                            {uploading ? 'Subiendo archivo…' : 'Arrastrá o clic para subir PDF o HTML'}
+                          </p>
+                          <p className="text-xs" style={{ color: '#374151' }}>Máx. 10 MB</p>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className="flex-1 h-px" style={{ background: '#1e1e1e' }} />
+                          <span className="text-xs" style={{ color: '#374151' }}>o pegar URL</span>
+                          <div className="flex-1 h-px" style={{ background: '#1e1e1e' }} />
+                        </div>
+                        <div className="flex gap-2 mt-2">
+                          <input value={prop.drive_url ?? ''} onChange={e => input('drive_url', e.target.value || null)}
+                            placeholder="https://drive.google.com/…"
+                            className="flex-1 px-3 py-2.5 rounded-xl text-sm outline-none" style={inp} />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div>

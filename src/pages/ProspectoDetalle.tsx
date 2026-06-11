@@ -12,7 +12,7 @@ import type { Prospecto, Tarea, TareaTipo, ProspectoStage } from '../types'
 const TIPOS: TareaTipo[] = ['Llamada', 'WhatsApp', 'Email', 'Reunión', 'Tarea']
 const TIPO_ICON: Record<TareaTipo, string> = { 'Llamada': '📞', 'WhatsApp': '💬', 'Email': '📧', 'Reunión': '🤝', 'Tarea': '✅' }
 
-const STAGES: ProspectoStage[] = ['Nuevo', 'Contactado', 'Propuesta enviada', 'Reunión', 'Ganado', 'Perdido']
+const STAGES: ProspectoStage[] = ['Nuevo', 'Contactado', 'Reunión', 'Propuesta enviada', 'Ganado', 'Perdido']
 const STAGE_COLORS: Record<string, string> = {
   'Nuevo': '#6b7280',
   'Contactado': '#0094ff',
@@ -23,9 +23,9 @@ const STAGE_COLORS: Record<string, string> = {
 }
 const NEXT_STAGE: Partial<Record<ProspectoStage, ProspectoStage>> = {
   'Nuevo': 'Contactado',
-  'Contactado': 'Propuesta enviada',
-  'Propuesta enviada': 'Reunión',
-  'Reunión': 'Ganado',
+  'Contactado': 'Reunión',
+  'Reunión': 'Propuesta enviada',
+  'Propuesta enviada': 'Ganado',
 }
 
 export default function ProspectoDetalle() {

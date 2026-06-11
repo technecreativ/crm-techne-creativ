@@ -10,7 +10,7 @@ import Modal from '../components/ui/Modal'
 import { buildWaUrl, scoreColor } from '../lib/utils'
 import type { Prospecto, ProspectoStage } from '../types'
 
-const STAGES: ProspectoStage[] = ['Nuevo', 'Contactado', 'Propuesta enviada', 'Reunión', 'Ganado', 'Perdido']
+const STAGES: ProspectoStage[] = ['Nuevo', 'Contactado', 'Reunión', 'Propuesta enviada', 'Ganado', 'Perdido']
 
 const STAGE_COLORS: Record<string, string> = {
   'Nuevo': '#6b7280',

@@ -41,6 +41,14 @@ const EMPTY_A: AdicForm = { titulo: '', descripcion: '', estado: 'Pendiente', mo
 
 const ESTADOS_CLIENTE: Cliente['estado'][] = ['Kickoff', 'En producción', 'Revisión', 'Entregado', 'Pausado']
 
+const ESTADO_STYLE: Record<string, { bg: string; color: string }> = {
+  'Kickoff':       { bg: 'rgba(0,247,255,0.12)',   color: '#00f7ff' },
+  'En producción': { bg: 'rgba(0,148,255,0.12)',   color: '#0094ff' },
+  'Revisión':      { bg: 'rgba(255,252,0,0.12)',   color: '#fffc00' },
+  'Entregado':     { bg: 'rgba(16,185,129,0.12)',  color: '#10b981' },
+  'Pausado':       { bg: 'rgba(107,114,128,0.15)', color: '#9ca3af' },
+}
+
 interface ClienteForm {
   nombre_negocio: string; contacto: string; ciudad: string; whatsapp: string
   email: string; servicio: string; estado: Cliente['estado']; drive_folder_url: string; notas: string
@@ -190,6 +198,17 @@ export default function ClienteDetalle() {
     loadAdicionales()
   }
 
+  const changeEstadoCliente = async (estado: Cliente['estado']) => {
+    await supabase.from('clientes').update({ estado }).eq('id', id!)
+    setCliente(prev => prev ? { ...prev, estado } : prev)
+  }
+
+  const deleteCliente = async () => {
+    if (!window.confirm(`¿Eliminar el cliente "${cliente?.nombre_negocio}"? Esta acción no se puede deshacer.`)) return
+    await supabase.from('clientes').delete().eq('id', id!)
+    navigate('/clientes')
+  }
+
   // ─────────────────────────────────────────────────────────────────────────
   if (!cliente) return (
     <div className="flex-1 flex items-center justify-center">
@@ -204,6 +223,7 @@ export default function ClienteDetalle() {
           <div className="flex items-center gap-2">
             <ContactButtons whatsapp={cliente.whatsapp} email={cliente.email} driveUrl={cliente.drive_folder_url} calendarTitle={`Reunión con ${cliente.nombre_negocio}`} size="md" />
             <Button size="sm" variant="secondary" icon={<Pencil size={13} />} onClick={openEdit}>Editar</Button>
+            <Button size="sm" variant="danger" icon={<Trash2 size={13} />} onClick={deleteCliente} />
           </div>
         }
       />
@@ -222,7 +242,19 @@ export default function ClienteDetalle() {
             <div className="rounded-2xl p-5" style={{ background: '#111', border: '1px solid #1e1e1e' }}>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-bold" style={{ fontFamily: 'Syne', color: '#e8ecf7' }}>{cliente.nombre_negocio}</h2>
-                <Badge label={cliente.estado} variant={STAGE_VARIANT[cliente.estado]} />
+                <select
+                  value={cliente.estado}
+                  onChange={e => changeEstadoCliente(e.target.value as Cliente['estado'])}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full outline-none cursor-pointer transition-all"
+                  style={{
+                    background: ESTADO_STYLE[cliente.estado]?.bg ?? 'rgba(107,114,128,0.15)',
+                    color: ESTADO_STYLE[cliente.estado]?.color ?? '#9ca3af',
+                    border: 'none',
+                  }}>
+                  {ESTADOS_CLIENTE.map(s => (
+                    <option key={s} value={s} style={{ background: '#0a0a0a', color: '#e8ecf7' }}>{s}</option>
+                  ))}
+                </select>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
                 <IR label="Contacto" value={cliente.contacto} />

@@ -1,8 +1,8 @@
 export type ProspectoStage =
   | 'Nuevo'
   | 'Contactado'
-  | 'Propuesta enviada'
   | 'Reunión'
+  | 'Propuesta enviada'
   | 'Ganado'
   | 'Perdido'
 
