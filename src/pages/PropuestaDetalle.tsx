@@ -78,7 +78,6 @@ export default function PropuestaDetalle() {
       return
     }
     setUploading(true)
-    const ext = file.name.split('.').pop()
     const path = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
     const { error } = await supabase.storage.from('propuestas').upload(path, file, { contentType: file.type })
     if (error) { alert('Error al subir el archivo: ' + error.message); setUploading(false); return }
