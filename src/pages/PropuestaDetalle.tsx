@@ -154,6 +154,19 @@ export default function PropuestaDetalle() {
                     </select>
                   </div>
                   <div>
+                    <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Monto total</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={prop.monto_total ?? ''}
+                      onChange={e => setProp(p => ({ ...p, monto_total: e.target.value === '' ? null : Number(e.target.value) }))}
+                      placeholder="0"
+                      className="w-full px-3 py-2.5 rounded-xl text-sm outline-none"
+                      style={inp}
+                    />
+                  </div>
+                </div>
+                <div>
                     <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Archivo de propuesta</label>
                     <input ref={fileInputRef} type="file" accept=".html,.pdf" className="hidden"
                       onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f); e.target.value = '' }} />
@@ -222,7 +235,6 @@ export default function PropuestaDetalle() {
                       </div>
                     )}
                   </div>
-                </div>
                 <div>
                   <label className="block text-xs font-semibold mb-1.5 uppercase tracking-wider" style={{ color: '#6b7280' }}>Notas / Condiciones</label>
                   <textarea value={prop.notas ?? ''} onChange={e => input('notas', e.target.value || null)} rows={2}
